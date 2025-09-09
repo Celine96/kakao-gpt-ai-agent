@@ -1,7 +1,7 @@
 services:
   # A Docker web service
   - type: web
-    name: pycon-AI-messenger
+    name: kakao_ai_agent_v0.1
     runtime: python
     plan: free
     autoDeploy: false
