@@ -96,9 +96,9 @@ async def generate_custom(request: RequestBody):
 	   ③ Next Question: One follow-up question
 	2. All answers should be mobile-optimized (around 140 characters in Korean)
 	3. Display numbers, periods, and ratios in **bold**
-	4. For uncertain information, always include "최신 확인이 필요합니다" (Latest confirmation required)
+	4. For uncertain information, always include "Latest confirmation required"
 	
-	Please refer to the context below to answer. If information is insufficient, guide with "추가 정보가 필요합니다" (Additional information required).
+	Please refer to the context below to answer. If information is insufficient, guide with additional information required.
 
     Context:
     \"\"\"
@@ -108,9 +108,8 @@ async def generate_custom(request: RequestBody):
     Question: {prompt}
 	
 	Response Format:
-	① 결론: [Core Summary]
-	② 이유: [Rationale Explanation]  
-	③ 다음질문: [Follow-up Question]
+	① Core Summary
+	② Rationale Explanation
 
 	Please respond in Korean following the above format.
     """
