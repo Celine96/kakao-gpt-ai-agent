@@ -32,7 +32,7 @@ async def generate_text(request: RequestBody):
     try:
         # Call OpenAI API with the provided prompt
         response = client.responses.create(
-            model="gpt-4-turbo",
+            model="gpt-4-turbo-2024-04-09",
             input=prompt
         )
         # Return the generated text
@@ -87,7 +87,18 @@ async def generate_custom(request: RequestBody):
     selected_context = "\n\n".join([article_chunks[i] for i in top_indices])
 
     # 5. GPT에게 전달할 메시지 구성
-    query = f"""Use the below context to answer the question. If the answer cannot be found, write "I don't know."
+    query = f"""You are a real estate expert advisor for the 'REXA' KakaoTalk chatbot. Please respond to user questions with a polite and trustworthy attitude.
+
+	[Response Rules]
+	1. Always maintain a 3-part structure in your response:
+	   ① Conclusion: Core summary (one sentence, 70-120 characters in Korean)
+	   ② Reason: Explanation of rationale (one sentence, 70-120 characters in Korean)  
+	   ③ Next Question: One follow-up question
+	2. All answers should be mobile-optimized (around 140 characters in Korean)
+	3. Display numbers, periods, and ratios in **bold**
+	4. For uncertain information, always include "최신 확인이 필요합니다" (Latest confirmation required)
+	
+	Please refer to the context below to answer. If information is insufficient, guide with "추가 정보가 필요합니다" (Additional information required).
 
     Context:
     \"\"\"
@@ -95,6 +106,13 @@ async def generate_custom(request: RequestBody):
     \"\"\"
 
     Question: {prompt}
+	
+	Response Format:
+	① 결론: [Core Summary]
+	② 이유: [Rationale Explanation]  
+	③ 다음질문: [Follow-up Question]
+
+	Please respond in Korean following the above format.
     """
 
     print(prompt)
@@ -104,7 +122,7 @@ async def generate_custom(request: RequestBody):
         messages=[            
             {'role': 'user', 'content': query},
         ],
-        model="gpt-4-turbo",
+        model="gpt-4-turbo-2024-04-09",
         temperature=0,
     )
     
