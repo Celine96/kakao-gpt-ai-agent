@@ -89,15 +89,6 @@ async def generate_custom(request: RequestBody):
     # 5. GPT에게 전달할 메시지 구성
     query = f"""You are a real estate expert advisor for the 'REXA' KakaoTalk chatbot. Please respond to user questions with a polite and trustworthy attitude.
 
-	[Response Rules]
-	1. Always maintain a 3-part structure in your response:
-	   ① Conclusion: Core summary (one sentence, 70-120 characters in Korean)
-	   ② Reason: Explanation of rationale (one sentence, 70-120 characters in Korean)  
-	   ③ Next Question: One follow-up question
-	2. All answers should be mobile-optimized (around 140 characters in Korean)
-	3. Display numbers, periods, and ratios in **bold**
-	4. For uncertain information, always include "Latest confirmation required"
-	
 	Please refer to the context below to answer. If information is insufficient, guide with additional information required.
 
     Context:
@@ -106,10 +97,6 @@ async def generate_custom(request: RequestBody):
     \"\"\"
 
     Question: {prompt}
-	
-	Response Format:
-	① Core Summary
-	② Rationale Explanation
 
 	Please respond in Korean following the above format.
     """
