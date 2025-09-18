@@ -31,7 +31,7 @@ async def generate_text(request: RequestBody):
     try:
         # Call OpenAI API with the provided prompt
         response = client.responses.create(
-            model="gpt-4-turbo", #gpt-4.1-nano 에서 수정
+            model="gpt-4.1-nano", #(기존)gpt-4.1-nano 
             input=prompt # type: ignore
         )
         # Return the generated text
