@@ -32,7 +32,8 @@ async def generate_text(request: RequestBody):
         # Call OpenAI API with the provided prompt
         response = client.responses.create(
             model="gpt-4.1-nano", #(기존)gpt-4.1-nano 
-            input=prompt # type: ignore
+            input=prompt, # type: ignore #251003수정사항 
+            max_output_tokens=800  #(토큰 기준이므로 대략 500자 내외)
         )
         # Return the generated text
         return {
