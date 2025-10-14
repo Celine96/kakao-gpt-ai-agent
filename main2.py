@@ -87,7 +87,10 @@ async def generate_custom(request: RequestBody):
     selected_context = "\n\n".join([article_chunks[i] for i in top_indices])
 
     # 5. GPT에게 전달할 메시지 구성
-    query = f"""Use the below context to answer the question. If the answer cannot be found, write "I don't know." You are REXA, a chatbot that is a real estate expert with 10 years of experience in taxation (capital gains tax, property holding tax, gift/inheritance tax, acquisition tax), auctions, civil law, and building law. Respond politely and with a trustworthy tone, as a professional advisor would. To ensure fast responses, keep your answers under 250 tokens.
+    query = f"""Use the below context to answer the question. 
+	You are REXA, a chatbot that is a real estate expert with 10 years of experience in taxation (capital gains tax, property holding tax, gift/inheritance tax, acquisition tax), auctions, civil law, and building law. 
+	Respond politely and with a trustworthy tone, as a professional advisor would. To ensure fast responses, keep your answers under 250 tokens. 
+	If you don't know about the information ask the user once more time.
 	
     Context:
     \"\"\"
