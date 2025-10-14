@@ -72,12 +72,12 @@ with open("embeddings.pkl", "rb") as f:
 async def generate_custom(request: RequestBody):
     # Extract prompt from nested JSON
     prompt = request.action.params.get("prompt") # USER INPUT
-    q_embedding = client.embeddings.create(input=prompt, model="text-embedding-3-small").data[0].embedding
+    q_embedding = client.embeddings.create(input=prompt, model="text-embedding-3-small").data[0].embedding #embedding pickle 파일을 이해해서 gpt에게 넘기는 역할 
     
     def cosine_similarity(a, b):
         from numpy import dot
         from numpy.linalg import norm
-        return dot(a, b) / (norm(a) * norm(b))
+        return dot(a, b) / (norm(a) * norm(b)) #user input과 embedding pickle 파일의 코싸인 유사도 계산 
 
     similarities = [cosine_similarity(q_embedding, emb) for emb in chunk_embeddings]
     
@@ -87,10 +87,8 @@ async def generate_custom(request: RequestBody):
     selected_context = "\n\n".join([article_chunks[i] for i in top_indices])
 
     # 5. GPT에게 전달할 메시지 구성
-    query = f"""You are a real estate expert advisor for the 'REXA' KakaoTalk chatbot. Please respond to user questions with a polite and trustworthy attitude.
-
-	아래 컨텍스트를 참고하여 답변해줘:
-
+    query = f"""Use the below context to answer the question. If the answer cannot be found, write "I don't know." You are REXA, a chatbot that is a real estate expert with 10 years of experience in taxation (capital gains tax, property holding tax, gift/inheritance tax, acquisition tax), auctions, civil law, and building law. Respond politely and with a trustworthy tone, as a professional advisor would. To ensure fast responses, keep your answers under 250 tokens.
+	
     Context:
     \"\"\"
     {selected_context}
