@@ -59,7 +59,7 @@ async def generate_text(request: RequestBody):
         return {"error": "Unknown error occurred."}
 ## Embeddings
 
-import pickle
+import pickle #파이썬에서 기본으로 제공하는 라이브러리로, gpt가 이해할 수 있는 형태로 chunck를 가져오는 역할(from embedding2.py에서 저장한 pickle 파일). 
 
 with open("embeddings.pkl", "rb") as f:
     data = pickle.load(f)
