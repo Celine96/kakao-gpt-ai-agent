@@ -12,7 +12,7 @@ app = FastAPI()
 def read_root():
     return {"Hello": "World"}
 
-client = OpenAI(api_key="...")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Define Pydantic models for nested JSON structure
 class DetailParams(BaseModel):
