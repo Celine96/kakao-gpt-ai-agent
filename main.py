@@ -32,7 +32,7 @@ async def generate_text(request: RequestBody):
     try:
         # Call OpenAI API with the provided prompt
         response = client.responses.create(
-            model="gpt-4o",
+            model="gpt-5",
             input=prompt
         )
         # Return the generated text
@@ -109,7 +109,7 @@ async def generate_custom(request: RequestBody):
         messages=[            
             {'role': 'user', 'content': query},
         ],
-        model="gpt-4o",
+        model="gpt-5",
         temperature=0,
     )
     
