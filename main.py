@@ -32,7 +32,7 @@ async def generate_text(request: RequestBody):
     try:
         # Call OpenAI API with the provided prompt
         response = client.responses.create(
-            model="gpt-4.1-mini-2025-04-14",
+            model="gpt-4o",
             input=prompt
         )
         # Return the generated text
@@ -89,7 +89,7 @@ async def generate_custom(request: RequestBody):
     # 5. GPT에게 전달할 메시지 구성
     query = f"""Use the below context to answer the question. 
 	You are REXA, a chatbot that is a real estate expert with 10 years of experience in taxation (capital gains tax, property holding tax, gift/inheritance tax, acquisition tax), auctions, civil law, and building law. 
-	Respond politely and with a trustworthy tone, as a professional advisor would. To ensure fast responses, keep your answers under 250 tokens. 
+	Respond politely and with a trustworthy tone, as a professional advisor would. To ensure fast responses, keep your answers under 300 tokens. 
 	If you don't know about the information ask the user once more time.
 	
     Context:
@@ -109,7 +109,7 @@ async def generate_custom(request: RequestBody):
         messages=[            
             {'role': 'user', 'content': query},
         ],
-        model="gpt-4.1-mini-2025-04-14",
+        model="gpt-4o",
         temperature=0,
     )
     
