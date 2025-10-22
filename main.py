@@ -33,7 +33,8 @@ async def generate_text(request: RequestBody):
         # Call OpenAI API with the provided prompt
         response = client.responses.create(
             model="o4-mini-deep-research-2025-06-26",
-            input=prompt
+            input=prompt,
+			tools=[{"type": "web_search_preview"}] #o4-mini-deep-research-2025-06-26용 web search 기능 활성화
         )
         # Return the generated text
         return {
@@ -107,6 +108,7 @@ async def generate_custom(request: RequestBody):
     response = client.responses.create(
         model="o4-mini-deep-research-2025-06-26",
         input=query,  # messages가 아닌 input 파라미터 사용
+		tools=[{"type": "web_search_preview"}]
     )
     
     # Return the generated text
