@@ -32,7 +32,7 @@ async def generate_text(request: RequestBody):
     try:
         # Call OpenAI API with the provided prompt
         response = client.responses.create(
-            model="gpt-5-pro-2025-10-06",
+            model="o4-mini-deep-research-2025-06-26",
             input=prompt
         )
         # Return the generated text
@@ -105,7 +105,7 @@ async def generate_custom(request: RequestBody):
 	
     # responses.create()로 변경
     response = client.responses.create(
-        model="gpt-5-pro-2025-10-06",
+        model="o4-mini-deep-research-2025-06-26",
         input=query,  # messages가 아닌 input 파라미터 사용
     )
     
