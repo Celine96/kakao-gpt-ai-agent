@@ -32,9 +32,8 @@ async def generate_text(request: RequestBody):
     try:
         # Call OpenAI API with the provided prompt
         response = client.responses.create(
-            model="o4-mini-deep-research-2025-06-26",
-            input=prompt,
-			tools=[{"type": "web_search_preview"}] #o4-mini-deep-research-2025-06-26용 web search 기능 활성화
+            model="chatgpt-4o-latest",
+            input=prompt
         )
         # Return the generated text
         return {
@@ -72,23 +71,25 @@ with open("embeddings.pkl", "rb") as f:
 @app.post("/custom")
 async def generate_custom(request: RequestBody):
     # Extract prompt from nested JSON
-    prompt = request.action.params.get("prompt")
-    q_embedding = client.embeddings.create(input=prompt, model="text-embedding-3-small").data[0].embedding
+    prompt = request.action.params.get("prompt") # USER INPUT
+    q_embedding = client.embeddings.create(input=prompt, model="text-embedding-3-small").data[0].embedding #embedding pickle 파일을 이해해서 gpt에게 넘기는 역할 
     
     def cosine_similarity(a, b):
         from numpy import dot
         from numpy.linalg import norm
-        return dot(a, b) / (norm(a) * norm(b))
+        return dot(a, b) / (norm(a) * norm(b)) #user input과 embedding pickle 파일의 코싸인 유사도 계산 
 
     similarities = [cosine_similarity(q_embedding, emb) for emb in chunk_embeddings]
     
+    # 4. 가장 유사한 청크 N개 선택 (여기선 2개)
     top_n = 2
     top_indices = np.argsort(similarities)[-top_n:][::-1]
     selected_context = "\n\n".join([article_chunks[i] for i in top_indices])
 
+    # 5. GPT에게 전달할 메시지 구성
     query = f"""Use the below context to answer the question. 
 	You are REXA, a chatbot that is a real estate expert with 10 years of experience in taxation (capital gains tax, property holding tax, gift/inheritance tax, acquisition tax), auctions, civil law, and building law. 
-	Respond politely and with a trustworthy tone, as a professional advisor would. To ensure fast responses, keep your answers under 300 tokens. 
+	Respond politely and with a trustworthy tone, as a professional advisor would. To ensure fast responses, keep your answers under 250 tokens. 
 	If you don't know about the information ask the user once more time.
 	
     Context:
@@ -104,23 +105,24 @@ async def generate_custom(request: RequestBody):
     print(prompt)
     print(query)
 	
-    # responses.create()로 변경
-    response = client.responses.create(
-        model="o4-mini-deep-research-2025-06-26",
-        input=query,  # messages가 아닌 input 파라미터 사용
-		tools=[{"type": "web_search_preview"}]
+    response = client.chat.completions.create(
+        messages=[            
+            {'role': 'user', 'content': query},
+        ],
+        model="chatgpt-4o-latest",
+        temperature=0,
     )
     
     # Return the generated text
     return {
         "version": "2.0",
         "template": {
-            "outputs": [
-                {
-                    "simpleText": {
-                        "text": response.output_text  # 응답 형식도 변경
-                    }
+        "outputs": [
+            {
+                "simpleText": {
+                    "text": response.choices[0].message.content
                 }
-            ]
+            }
+        ]
         }                
     }
